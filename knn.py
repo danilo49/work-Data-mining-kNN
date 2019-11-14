@@ -19,7 +19,7 @@ from sklearn import model_selection   #Dividir matrizes em subconjuntos aleatór
 from sklearn.model_selection import KFold  #Fornece índices de treinamento / teste para dividir dados em conjuntos de treinamento / teste
 from sklearn import neighbors, metrics   #Classificador que implementa o voto dos k-vizinhos mais próximos.
 from sklearn import preprocessing   #pacote fornece várias funções utilitárias comuns e classes de transformadores para alterar 
-#vetores de recursos brutos em uma representação mais adequada para os estimadores a jusante.
+#vetores de recursos brutos em uma representação mais adequada para os estimadores a posteriores.
 import warnings
 warnings.filterwarnings(action='ignore')
 
@@ -220,7 +220,7 @@ plt.xlabel('1 - specificite', fontsize=14)
 plt.ylabel('Sensibilite', fontsize=14)
 plt.show()
 
-print("AUROC =", round(metrics.auc(fpr, tpr), 3))
+print("ROC =", round(metrics.auc(fpr, tpr), 3))
 
 #Veja o exemplo do vinho verde. 
 #Imagine que o algoritmo deve ser capaz de detectar com eficácia vinhos de baixa qualidade, 
@@ -234,10 +234,10 @@ idx = np.min(np.where(tpr > 0.95)) # primeiro índice limite para o qual
                                    # a sensibilidade é maior que 0,95
 print("Sensibilidade : %.2f" % tpr[idx])
 print("Especificidade : %.2f" % (1-fpr[idx]))
-print("Seuil : %.2f" % thr[idx])
+print("Limiar : %.2f" % thr[idx])
 
-#Usar um limite de 0,20 garante uma sensibilidade de 0,98 e uma especificidade de 0,18, 
-#uma taxa de falsos positivos de ... 82%.
+#Usar um limite de 0,33 garante uma sensibilidade de 0,97 e uma especificidade de 0,33, 
+
 
 #Avalie comparando com abordagens ingênuas
 X_train, X_test, y_train, y_test = \
@@ -254,7 +254,7 @@ knn2 = neighbors.KNeighborsRegressor(n_neighbors=11)
 
 knn2.fit(X_train_std, y_train)
 
-#E aplique-o para prever os rótulos do nosso jogo de teste:
+#E aplique-o para prever os rótulos do nossa base de teste:
 y_pred = knn2.predict(X_test_std)   
 
 print("RMSE : %.2f" % np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
@@ -297,5 +297,4 @@ print("RMSE : %.2f" % np.sqrt(metrics.mean_squared_error(y_test, y_pred_random))
 #Nosso modelo conseguiu assim aprender muito melhor do que um modelo aleatório.
 
 #No entanto, muitos de nossos vinhos têm uma classificação de 6, e muitas de nossas previsões estão em torno desse valor. 
-
 
